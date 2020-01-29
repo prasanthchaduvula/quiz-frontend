@@ -24,7 +24,7 @@ class Profile extends React.Component {
 }
 
 function mapStateToProps(store) {
-  return { admin: store.admin };
+  return { admin: store.admin.admin };
 }
 
 export default connect(mapStateToProps)(Profile);

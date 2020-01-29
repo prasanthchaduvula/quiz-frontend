@@ -22,13 +22,13 @@
   justify-content: space-between;
   margin: 1.5rem 0;
 }
-table {
+.showmarks-table {
   width: 100%;
   border: 1px solid black;
   border-collapse: collapse;
   box-shadow: 0 1px 6px 0 rgba(0, 0, 0, 0.5);
 }
-th {
+.showmarks-table-th {
   border: 1px solid $primarybtntextColor;
   border-collapse: collapse;
   background-color: $secondarybtnBgColor;
@@ -39,7 +39,7 @@ th {
   padding: 1.2rem;
   text-align: center;
 }
-td {
+.showmarks-table-td {
   border: 1px solid $primarybtntextColor;
   border-collapse: collapse;
   background-color: rgb(251, 251, 251);

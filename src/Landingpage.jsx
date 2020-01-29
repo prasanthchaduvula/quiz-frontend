@@ -8,12 +8,24 @@ class Landingpage extends React.Component {
         <div className="hero-section">
           <center className="hero-wrapper">
             <p className="hero-text">Welcome to Quiz</p>
-            <NavLink className="hero-btn nav-item-btn" to="/admins/">
+
+            <NavLink
+              className="hero-btn nav-item-btn"
+              to={
+                localStorage.quizAdminToken
+                  ? `/admins/${localStorage.quizAdminName}`
+                  : '/admins'
+              }
+            >
               Get Started As Admin
             </NavLink>
             <NavLink
               className="hero-btn nav-item-btn landing-page-btn"
-              to="/users/"
+              to={
+                localStorage.quizuserToken
+                  ? `/users/${localStorage.quizuserName}`
+                  : '/users'
+              }
             >
               Get Started As User
             </NavLink>

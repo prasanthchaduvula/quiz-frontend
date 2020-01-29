@@ -1,4 +1,6 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { fetchUser } from '../../state/actions/user.actions';
 
 class Profile extends React.Component {
   constructor() {
@@ -8,23 +10,10 @@ class Profile extends React.Component {
     };
   }
   componentDidMount() {
-    fetch('http://localhost:3001/api/v1/user', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: localStorage.quizuserToken
-      }
-    })
-      .then(res => res.json())
-      .then(data => {
-        if (data.success) {
-          this.setState({ user: data.user });
-        }
-        console.log(this.state.user);
-      });
+    this.props.dispatch(fetchUser());
   }
   render() {
-    let { user } = this.state;
+    let { user } = this.props;
     return (
       <div className="profile-section">
         <center>
@@ -36,4 +25,8 @@ class Profile extends React.Component {
   }
 }
 
-export default Profile;
+function mapStateToProps(store) {
+  return { user: store.user.userDetails };
+}
+
+export default connect(mapStateToProps)(Profile);

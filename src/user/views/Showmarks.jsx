@@ -1,5 +1,6 @@
 import React from 'react';
-
+import { connect } from 'react-redux';
+import { fetchUser } from '../../state/actions/user.actions';
 class Showmarks extends React.Component {
   constructor() {
     super();
@@ -8,31 +9,18 @@ class Showmarks extends React.Component {
     };
   }
   componentDidMount() {
-    fetch('http://localhost:3001/api/v1/user', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: localStorage.quizuserToken
-      }
-    })
-      .then(res => res.json())
-      .then(data => {
-        if (data.success) {
-          this.setState({ totalmarks: data.user.marksId.reverse() });
-        }
-        console.log(this.state.totalmarks);
-      });
+    this.props.dispatch(fetchUser());
   }
   render() {
-    let { totalmarks } = this.state;
+    let { totalmarks } = this.props;
     return (
       <>
         <div className="showmarks-section">
           {totalmarks.length ? (
             <>
               <p className="showmarks-heading">Showing all test marks</p>
-              <table>
-                <tr>
+              <table className="showmarks-table">
+                <tr className="showmarks-table-th">
                   <th>So.No</th>
                   <th>Quizset Name</th>
                   <th>Marks secured</th>
@@ -41,11 +29,13 @@ class Showmarks extends React.Component {
                 {totalmarks &&
                   totalmarks.map((marks, index) => (
                     <tr>
-                      <td>{index + 1}</td>
-                      <td>{marks.quizsetName}</td>
-                      <td>{marks.mark}</td>
+                      <td className="showmarks-table-td">{index + 1}</td>
+                      <td className="showmarks-table-td">
+                        {marks.quizsetName}
+                      </td>
+                      <td className="showmarks-table-td">{marks.mark}</td>
 
-                      <td>
+                      <td className="showmarks-table-td">
                         {' '}
                         {new Intl.DateTimeFormat('en-GB', {
                           hour: '2-digit',
@@ -68,4 +58,8 @@ class Showmarks extends React.Component {
   }
 }
 
-export default Showmarks;
+function mapStateToProps(store) {
+  return { totalmarks: store.user.marks };
+}
+
+export default connect(mapStateToProps)(Showmarks);

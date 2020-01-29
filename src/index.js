@@ -1,6 +1,5 @@
 import React from 'react';
 import { render } from 'react-dom';
-
 import User from './user/views/App';
 import Admin from './admin/views/App';
 import Landingpage from './Landingpage';

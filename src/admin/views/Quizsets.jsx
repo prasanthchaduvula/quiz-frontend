@@ -13,7 +13,6 @@ class Quizsets extends React.Component {
   }
 
   componentDidMount() {
-    this.handleview();
     fetch('http://localhost:3001/api/v1/admin', {
       method: 'GET',
       headers: {
@@ -34,12 +33,6 @@ class Quizsets extends React.Component {
       });
   }
 
-  handleview = () => {
-    this.props.quizsets &&
-      this.setState({
-        quizsetArr: this.state.quizsetArr.concat(this.props.quizsets)
-      });
-  };
   render() {
     let { quizsetName } = this.state;
     return (
