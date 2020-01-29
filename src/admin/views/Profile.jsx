@@ -1,30 +1,17 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { fetchAdmin } from '../../state/actions/admin.actions';
 
 class Profile extends React.Component {
   constructor() {
     super();
-    this.state = {
-      admin: ''
-    };
+    this.state = {};
   }
   componentDidMount() {
-    fetch('http://localhost:3001/api/v1/admin', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: localStorage.quizAdminToken
-      }
-    })
-      .then(res => res.json())
-      .then(data => {
-        if (data.success) {
-          this.setState({ admin: data.admin });
-        }
-        console.log(this.state.admin);
-      });
+    this.props.dispatch(fetchAdmin());
   }
   render() {
-    let { admin } = this.state;
+    let { admin } = this.props;
     return (
       <div className="profile-section">
         <center>
@@ -36,4 +23,8 @@ class Profile extends React.Component {
   }
 }
 
-export default Profile;
+function mapStateToProps(store) {
+  return { admin: store.admin };
+}
+
+export default connect(mapStateToProps)(Profile);

@@ -3,10 +3,10 @@ import { render } from 'react-dom';
 
 import User from './user/views/App';
 import Admin from './admin/views/App';
-import Hero from './admin/views/Hero';
 import Landingpage from './Landingpage';
 import { BrowserRouter, NavLink, Route } from 'react-router-dom';
-
+import { Provider } from 'react-redux';
+import store from './state/store';
 function App() {
   return (
     <Route exact path="/">
@@ -17,9 +17,11 @@ function App() {
 
 render(
   <BrowserRouter>
-    <App />
-    <Admin />
-    <User />
+    <Provider store={store}>
+      <App />
+      <Admin />
+      <User />
+    </Provider>
   </BrowserRouter>,
   document.getElementById('root')
 );

@@ -1,5 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { fetchAdmin } from '../../state/actions/admin.actions';
 class Quizsets extends React.Component {
   constructor() {
     super();
@@ -9,7 +11,9 @@ class Quizsets extends React.Component {
       quizsetName: []
     };
   }
+
   componentDidMount() {
+    this.handleview();
     fetch('http://localhost:3001/api/v1/admin', {
       method: 'GET',
       headers: {
@@ -30,10 +34,14 @@ class Quizsets extends React.Component {
       });
   }
 
-  handleQuizset = () => {};
+  handleview = () => {
+    this.props.quizsets &&
+      this.setState({
+        quizsetArr: this.state.quizsetArr.concat(this.props.quizsets)
+      });
+  };
   render() {
     let { quizsetName } = this.state;
-
     return (
       <>
         <div className="quizsets-list-wrapper">
@@ -54,4 +62,9 @@ class Quizsets extends React.Component {
   }
 }
 
-export default Quizsets;
+function mapStateToProps(store) {
+  console.log(store.admin);
+  return { quizsets: store.admin };
+}
+
+export default connect(mapStateToProps)(Quizsets);
