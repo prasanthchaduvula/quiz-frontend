@@ -23,6 +23,7 @@ class Showmarks extends React.Component {
                 <tr className="showmarks-table-th">
                   <th>So.No</th>
                   <th>Quizset Name</th>
+                  <th>Total Mark</th>
                   <th>Marks secured</th>
                   <th>Appeared on</th>
                 </tr>
@@ -33,6 +34,7 @@ class Showmarks extends React.Component {
                       <td className="showmarks-table-td">
                         {marks.quizsetName}
                       </td>
+                      <td className="showmarks-table-td">{marks.totalmark}</td>
                       <td className="showmarks-table-td">{marks.mark}</td>
 
                       <td className="showmarks-table-td">

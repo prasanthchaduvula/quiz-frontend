@@ -58,6 +58,7 @@ class Showquiz extends React.Component {
       },
       body: JSON.stringify({
         mark: this.state.marks,
+        totalmark: this.state.filterqns.length,
         quizsetName: this.state.quizname
       })
     })
