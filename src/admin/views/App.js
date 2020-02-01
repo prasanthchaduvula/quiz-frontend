@@ -8,7 +8,6 @@ import Signin from './Signin';
 import Notfound from './Notfound';
 import Home from './Home';
 import Create from './Create';
-import Profile from './Profile';
 import Showquiz from './Showquiz';
 import Questionedit from './Questionedit';
 

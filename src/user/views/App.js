@@ -48,9 +48,6 @@ class App extends React.Component {
     return (
       <>
         <Switch>
-          <Route exact path="/">
-            <Hero />
-          </Route>
           <Route exact path="/users/:username">
             <Header handleIslogged={this.handleIslogged} />
             <Home />
@@ -63,7 +60,7 @@ class App extends React.Component {
             <Header handleIslogged={this.handleIslogged} />
             <Showquiz />
           </Route>
-          <Route exact>
+          <Route exact path="/*">
             <Notfound />
           </Route>
         </Switch>

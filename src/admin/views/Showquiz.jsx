@@ -1,6 +1,7 @@
 import React from 'react';
 import { withRouter, NavLink } from 'react-router-dom';
-
+import { fetchQuestions } from '../../state/actions/admin.actions';
+import { connect } from 'react-redux';
 class Showquiz extends React.Component {
   constructor() {
     super();
@@ -13,20 +14,7 @@ class Showquiz extends React.Component {
 
   handleQuestions = () => {
     this.setState({ quizname: this.props.match.params.quizname });
-    fetch('http://localhost:3001/api/v1/questions')
-      .then(res => res.json())
-      .then(data => {
-        if (data.success) {
-          data.questions.map(question =>
-            question.quizset == this.state.quizname
-              ? this.setState({
-                  filterqns: this.state.filterqns.concat(question)
-                })
-              : ''
-          );
-        }
-      });
-    console.log('called after delete');
+    this.props.dispatch(fetchQuestions(this.props.match.params.quizname));
   };
   componentDidMount() {
     this.handleQuestions();
@@ -43,23 +31,24 @@ class Showquiz extends React.Component {
       .then(res => res.json())
       .then(data => {
         if (data.success) {
-          console.log('called');
-          this.setState({ show: true, filterqns: [] });
+          this.setState({ show: true });
           this.handleQuestions();
         }
       });
   };
 
   render() {
-    let { quizname, filterqns } = this.state;
+    let { quizname } = this.state;
+    let { filterqns } = this.props;
+
     return (
       <div className="quizlist-section">
-        <p className="quizlist-heading">{filterqns.length ? quizname : ''}</p>
-        {filterqns.length ? (
-          filterqns.map((question, index) => (
+        <p className="quizlist-heading">{quizname}</p>
+        {filterqns.map((question, index) =>
+          question.quizset == quizname ? (
             <div className="quiz-card-wrapper">
               <div>
-                <p className="question-no">{index + 1}.</p>
+                <p className="question-no">{index}.</p>
                 <p
                   onClick={() => this.handleDelete(question._id)}
                   className="question-no"
@@ -77,23 +66,27 @@ class Showquiz extends React.Component {
               <div className="question-card">
                 <p className="question-title">{question.title}</p>
                 <div className="question-answers">
-                  {question.answers.map(option => (
+                  {question.options.map(option => (
                     <button className="question-answers-item">{option}</button>
                   ))}
 
                   <button className="question-answers-item correct-answer">
-                    {question.correctanswer}
+                    {question.answer}
                   </button>
                 </div>
               </div>
             </div>
-          ))
-        ) : (
-          <p className="quizlist-heading">no question found</p>
+          ) : (
+            ''
+          )
         )}
       </div>
     );
   }
 }
 
-export default withRouter(Showquiz);
+function mapStateToProps(store) {
+  return { filterqns: store.admin.questions };
+}
+
+export default connect(mapStateToProps)(withRouter(Showquiz));

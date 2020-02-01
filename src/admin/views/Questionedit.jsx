@@ -10,8 +10,8 @@ class Questionedit extends React.Component {
       option2: '',
       option3: '',
       option4: '',
-      answers: [],
-      correctanswer: '',
+      options: [],
+      answer: '',
       quizset: ''
     };
   }
@@ -29,11 +29,11 @@ class Questionedit extends React.Component {
         if (data.success) {
           this.setState({
             title: data.question.title,
-            option1: data.question.answers[0],
-            option2: data.question.answers[1],
-            option3: data.question.answers[2],
-            option4: data.question.answers[3],
-            correctanswer: data.question.correctanswer,
+            option1: data.question.options[0],
+            option2: data.question.options[1],
+            option3: data.question.options[2],
+            option4: data.question.options[3],
+            answer: data.question.answer,
             quizset: data.question.quizset
           });
         }
@@ -44,8 +44,8 @@ class Questionedit extends React.Component {
     let { name, value } = event.target;
     this.setState({ [name]: value });
     let { option1, option2, option3, option4 } = this.state;
-    let options = [option1, option2, option3, option4];
-    this.setState({ answers: options });
+    let optionsarr = [option1, option2, option3, option4];
+    this.setState({ options: optionsarr });
   };
 
   handleSubmit = e => {
@@ -59,8 +59,8 @@ class Questionedit extends React.Component {
       },
       body: JSON.stringify({
         title: this.state.title,
-        answers: this.state.answers,
-        correctanswer: this.state.correctanswer,
+        options: this.state.options,
+        answer: this.state.answer,
         quizset: this.state.quizset
       })
     })
@@ -136,9 +136,9 @@ class Questionedit extends React.Component {
             <input
               className="sign-input"
               type="text"
-              name="correctanswer"
+              name="answer"
               placeholder="Ritesh Agarwal"
-              value={this.state.correctanswer}
+              value={this.state.answer}
               onChange={this.handleChange}
             />
             <label className="sign-label" htmlFor="">

@@ -1,5 +1,7 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
+import { fetchQuestions } from '../../state/actions/user.actions';
+import { connect } from 'react-redux';
 
 class Showquiz extends React.Component {
   constructor() {
@@ -15,10 +17,13 @@ class Showquiz extends React.Component {
 
   handleQuestions = () => {
     this.setState({ quizname: this.props.match.params.quizname });
+    this.props.dispatch(fetchQuestions());
+
     fetch('http://localhost:3001/api/v1/questions')
       .then(res => res.json())
       .then(data => {
         if (data.success) {
+          console.log(data);
           data.questions.map(question =>
             question.quizset == this.state.quizname
               ? this.setState({
@@ -34,7 +39,6 @@ class Showquiz extends React.Component {
   }
 
   handleAns = (event, _id, ans) => {
-    // event.target.style.visibility = 'hidden';
     this.setState({ ans: true });
     event.target.parentElement.parentElement.innerText = event.target.innerText;
     event.target.parentElement.style.visibility = 'hidden';
@@ -42,7 +46,7 @@ class Showquiz extends React.Component {
     let { marks, filterqns } = this.state;
     filterqns.map(question => {
       if (question._id == _id) {
-        return question.correctanswer == ans
+        return question.answer == ans
           ? this.setState({ marks: marks + 1 })
           : '';
       }
@@ -98,7 +102,7 @@ class Showquiz extends React.Component {
                   }`}
                 >
                   <div>
-                    {question.answers.map(option => (
+                    {question.options.map(option => (
                       <button
                         onClick={event => {
                           this.handleAns(event, question._id, option);
@@ -121,4 +125,8 @@ class Showquiz extends React.Component {
   }
 }
 
-export default withRouter(Showquiz);
+function mapStateToProps(store) {
+  return { filterqns: store.user.questions };
+}
+
+export default connect(mapStateToProps)(withRouter(Showquiz));

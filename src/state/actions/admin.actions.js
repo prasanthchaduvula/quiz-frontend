@@ -19,3 +19,20 @@ export function fetchAdmin() {
       });
   };
 }
+
+export function getQuestions(payload) {
+  return {
+    type: GET_QUESTIONS,
+    payload
+  };
+}
+
+export function fetchQuestions(quizsetname) {
+  return dispatch => {
+    fetch('http://localhost:3001/api/v1/questions')
+      .then(res => res.json())
+      .then(data => {
+        dispatch(getQuestions(data.questions));
+      });
+  };
+}

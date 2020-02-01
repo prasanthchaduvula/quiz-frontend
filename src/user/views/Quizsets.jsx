@@ -13,6 +13,7 @@ class Quizsets extends React.Component {
     fetch('http://localhost:3001/api/v1/questions/')
       .then(res => res.json())
       .then(data => {
+        console.log(data);
         this.setState({ questions: data.questions });
         this.state.questions.map(question =>
           this.setState({

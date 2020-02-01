@@ -1,8 +1,9 @@
-import { SHOW_USER } from '../types';
+import { SHOW_USER, GET_QUESTIONS } from '../types';
 
 let intialState = {
   userDetails: '',
-  marks: ''
+  marks: '',
+  questions: []
 };
 
 export default function user(state = intialState, action) {
@@ -13,7 +14,11 @@ export default function user(state = intialState, action) {
         userDetails: action.payload,
         marks: action.payload.marksId.reverse()
       };
-
+    case GET_QUESTIONS:
+      return {
+        ...state,
+        questions: action.payload
+      };
     default:
       return { ...state };
   }

@@ -3,6 +3,7 @@ import { GET_QUESTIONS, GET_ADMIN } from '../types';
 let intialState = {
   admin: '',
   questions: [],
+  filterqns: [],
   quizsets: []
 };
 
@@ -16,7 +17,11 @@ export default function admin(state = intialState, action) {
           state.quizsets.concat(question.quizset)
         ])
       };
-
+    case GET_QUESTIONS:
+      return {
+        ...state,
+        questions: action.payload
+      };
     default:
       return { ...state };
   }

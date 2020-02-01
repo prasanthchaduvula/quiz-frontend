@@ -10,8 +10,8 @@ class Create extends React.Component {
       option2: '',
       option3: '',
       option4: '',
-      answers: [],
-      correctanswer: '',
+      options: [],
+      answer: '',
       quizset: ''
     };
   }
@@ -20,8 +20,8 @@ class Create extends React.Component {
     let { name, value } = event.target;
     this.setState({ [name]: value });
     let { option1, option2, option3, option4 } = this.state;
-    let options = [option1, option2, option3, option4];
-    this.setState({ answers: options });
+    let optionsarr = [option1, option2, option3, option4];
+    this.setState({ options: optionsarr });
   };
 
   handleSubmit = e => {
@@ -34,8 +34,8 @@ class Create extends React.Component {
       },
       body: JSON.stringify({
         title: this.state.title,
-        answers: this.state.answers,
-        correctanswer: this.state.correctanswer,
+        options: this.state.options,
+        answer: this.state.answer,
         quizset: this.state.quizset
       })
     })
@@ -111,9 +111,9 @@ class Create extends React.Component {
             <input
               className="sign-input"
               type="text"
-              name="correctanswer"
+              name="answer"
               placeholder="Ritesh Agarwal"
-              value={this.state.correctanswer}
+              value={this.state.answer}
               onChange={this.handleChange}
             />
             <label className="sign-label" htmlFor="">

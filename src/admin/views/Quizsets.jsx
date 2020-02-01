@@ -39,7 +39,8 @@ class Quizsets extends React.Component {
       <>
         <div className="quizsets-list-wrapper">
           <div className="quizsets-list">
-            {quizsetName &&
+            {quizsetName.length ? (
+              quizsetName &&
               quizsetName.map(quizset => (
                 <NavLink
                   className="quizset-text"
@@ -47,7 +48,10 @@ class Quizsets extends React.Component {
                 >
                   {quizset}
                 </NavLink>
-              ))}
+              ))
+            ) : (
+              <p className="quizlist-heading">No quizsets found, create </p>
+            )}
           </div>
         </div>
       </>

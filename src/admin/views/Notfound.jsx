@@ -4,7 +4,8 @@ class Notfound extends React.Component {
   render() {
     return (
       <>
-        <img src="notfound.png" alt="" />
+        {/* <img src="notfound.png" alt="" /> */}
+        {/* <p>not found</p> */}
       </>
     );
   }
