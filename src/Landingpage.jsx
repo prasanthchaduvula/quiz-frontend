@@ -34,12 +34,20 @@ class LandingPage extends React.Component {
         <div className="footer-section">
           <div className="footer-wrapper">
             <div>
-              <NavLink className="footer-items" to="/">
+              <a
+                className="footer-items"
+                href="https://github.com/chaduvulaprasanth"
+                target="_blank"
+              >
                 ABOUT ME
-              </NavLink>
-              <NavLink className="footer-items" to="/">
+              </a>
+              <a
+                className="footer-items"
+                href="https://twitter.com/chaduvula98"
+                target="_blank"
+              >
                 HELP
-              </NavLink>
+              </a>
             </div>
             <small className="footer-copy">
               © 2020 Quiz from Chaduvula Prasanth

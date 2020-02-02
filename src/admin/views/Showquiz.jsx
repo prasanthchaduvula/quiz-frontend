@@ -48,7 +48,7 @@ class Showquiz extends React.Component {
           question.quizset == quizname ? (
             <div className="quiz-card-wrapper">
               <div>
-                <p className="question-no">{index}.</p>
+                <p className="question-no">{index + 1}.</p>
                 <p
                   onClick={() => this.handleDelete(question._id)}
                   className="question-no"

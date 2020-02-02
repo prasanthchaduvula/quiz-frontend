@@ -6,14 +6,13 @@ import LandingPage from './LandingPage';
 import { BrowserRouter, Route } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import store from './state/store';
+
 function App() {
   return (
     <>
       <Route exact path="/">
         <LandingPage />
       </Route>
-      <Admin />
-      <User />
     </>
   );
 }
@@ -22,6 +21,8 @@ render(
   <BrowserRouter>
     <Provider store={store}>
       <App />
+      <Admin />
+      <User />
     </Provider>
   </BrowserRouter>,
   document.getElementById('root')

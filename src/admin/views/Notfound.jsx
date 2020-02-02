@@ -5,7 +5,7 @@ class Notfound extends React.Component {
     return (
       <>
         {/* <img src="notfound.png" alt="" /> */}
-        {/* <p>not found</p> */}
+        <p>not found</p>
       </>
     );
   }

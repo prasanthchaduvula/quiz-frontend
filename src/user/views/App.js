@@ -60,7 +60,7 @@ class App extends React.Component {
             <Header handleIslogged={this.handleIslogged} />
             <Showquiz />
           </Route>
-          <Route exact path="/*">
+          <Route exact>
             <Notfound />
           </Route>
         </Switch>
