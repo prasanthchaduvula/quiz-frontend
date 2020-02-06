@@ -19,7 +19,7 @@ class Header extends React.Component {
             className="nav-item"
             to={`/admins/${localStorage.quizAdminName}/quizsets/create`}
           >
-            Create
+            Create a Quizset
           </NavLink>
           <NavLink
             onClick={this.handleLogout}

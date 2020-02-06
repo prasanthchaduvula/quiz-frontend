@@ -5,20 +5,23 @@ import { fetchUser } from '../../state/actions/user.actions';
 class Profile extends React.Component {
   constructor() {
     super();
-    this.state = {
-      user: ''
-    };
   }
   componentDidMount() {
     this.props.dispatch(fetchUser());
   }
   render() {
-    let { user } = this.props;
+    let { isLoading, user } = this.props;
     return (
       <div className="profile-section">
         <center>
-          <img className="profile-pic" src={user.userPicture} alt="" />
-          <p className="profile-name">{user.userName}</p>
+          {isLoading ? (
+            <p className="loader rloader"></p>
+          ) : (
+            <>
+              <img className="profile-pic" src={user.userPicture} alt="" />
+              <p className="profile-name">{user.userName}</p>
+            </>
+          )}
         </center>
       </div>
     );
@@ -26,7 +29,8 @@ class Profile extends React.Component {
 }
 
 function mapStateToProps(store) {
-  return { user: store.user.userDetails };
+  console.log(store);
+  return { isLoading: store.user.isLoading, user: store.user.userDetails };
 }
 
 export default connect(mapStateToProps)(Profile);

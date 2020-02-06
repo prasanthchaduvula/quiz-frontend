@@ -45,7 +45,7 @@ class Signup extends React.Component {
 
   render() {
     return (
-      <div className="sign-wrapper">
+      <div className="sign-wrapper rsign-wrapper">
         <div className="sign-section">
           <form className="sign-form">
             <label className="sign-label" htmlFor="">

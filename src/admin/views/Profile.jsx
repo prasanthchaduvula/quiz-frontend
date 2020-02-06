@@ -5,18 +5,21 @@ import { fetchAdmin } from '../../state/actions/admin.actions';
 class Profile extends React.Component {
   constructor() {
     super();
-    this.state = {};
   }
-  componentDidMount() {
-    this.props.dispatch(fetchAdmin());
-  }
+
   render() {
-    let { admin } = this.props;
+    let { isLoading, admin } = this.props;
     return (
       <div className="profile-section">
         <center>
-          <img className="profile-pic" src={admin.adminPicture} alt="" />
-          <p className="profile-name">{admin.adminName}</p>
+          {isLoading ? (
+            <p className="loader rloader"></p>
+          ) : (
+            <>
+              <img className="profile-pic" src={admin.adminPicture} alt="" />
+              <p className="profile-name">{admin.adminName}</p>
+            </>
+          )}
         </center>
       </div>
     );
@@ -24,7 +27,7 @@ class Profile extends React.Component {
 }
 
 function mapStateToProps(store) {
-  return { admin: store.admin.admin };
+  return { isLoading: store.admin.isLoading, admin: store.admin.adminDetails };
 }
 
 export default connect(mapStateToProps)(Profile);

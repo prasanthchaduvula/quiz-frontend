@@ -8,7 +8,16 @@
   border: 2px solid $primarybtntextColor;
   box-shadow: 0 0 18px #0b1c2d;
 }
-
+.sign-select {
+  display: block;
+  width: 100%;
+  height: 2.5rem;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  outline: none;
+  background-color: #fff;
+  margin: 0.6rem 0 1.3rem 0;
+}
 .sign-form {
   width: 100%;
 }
@@ -28,6 +37,13 @@
   font-size: 0.9rem;
   letter-spacing: 0.06rem;
   font-weight: 400;
+}
+.sign-quizsetname {
+  color: $secondarybtnBgColor;
+  margin: 0.6rem 0 1.3rem 0;
+  letter-spacing: 0.06rem;
+  font-size: 1.3rem;
+  font-weight: 500;
 }
 .sign-btn {
   letter-spacing: 0.06rem;

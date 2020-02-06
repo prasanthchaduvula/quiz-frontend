@@ -5,16 +5,11 @@ import { fetchAdmin } from '../../state/actions/admin.actions';
 class Quizsets extends React.Component {
   constructor() {
     super();
-    this.state = {
-      questions: '',
-      quizsetArr: [],
-      quizsetName: []
-    };
   }
 
-  componentDidMount() {
-    fetch('http://localhost:3001/api/v1/admin', {
-      method: 'GET',
+  handleDelete = id => {
+    fetch(`http://localhost:3001/api/v1/quizsets/${id}`, {
+      method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
         Authorization: localStorage.quizAdminToken
@@ -22,37 +17,52 @@ class Quizsets extends React.Component {
     })
       .then(res => res.json())
       .then(data => {
-        console.log(data);
-        this.setState({ questions: data.admin.questionsId });
-        this.state.questions.map(question =>
-          this.setState({
-            quizsetArr: this.state.quizsetArr.concat(question.quizset)
-          })
-        );
-        this.setState({ quizsetName: [...new Set(this.state.quizsetArr)] });
+        if (data.success) {
+          alert('deleted successfully');
+          this.props.dispatch(fetchAdmin());
+        }
       });
-  }
-
+  };
   render() {
-    let { quizsetName } = this.state;
+    let { isLoading, quizsets } = this.props;
     return (
       <>
-        <div className="quizsets-list-wrapper">
-          <div className="quizsets-list">
-            {quizsetName.length ? (
-              quizsetName &&
-              quizsetName.map(quizset => (
-                <NavLink
-                  className="quizset-text"
-                  to={`/admins/${localStorage.quizAdminName}/quizsets/${quizset}`}
-                >
-                  {quizset}
-                </NavLink>
-              ))
-            ) : (
-              <p className="quizlist-heading">No quizsets found, create </p>
-            )}
-          </div>
+        <div className="quizsets-list-wrapper rquizsets-list-wrapper">
+          {isLoading ? (
+            <p className="loader rloader"></p>
+          ) : (
+            <div className="quizsets-list rquizsets-list">
+              {quizsets.length ? (
+                quizsets &&
+                quizsets.map(quizset => (
+                  <div className="quizset-btn-wrapper">
+                    <NavLink
+                      className="quizset-btn-text"
+                      to={`/admins/${localStorage.quizAdminName}/quizsets/${quizset.quizsetName}/${quizset._id}`}
+                    >
+                      {quizset.quizsetName}
+                    </NavLink>
+                    <p
+                      onClick={() => this.handleDelete(quizset._id)}
+                      className="question-btn-no"
+                    >
+                      ❌
+                    </p>
+                    <NavLink
+                      to={`/admins/${localStorage.quizAdminName}/quizsets/${quizset.quizsetName}/${quizset._id}/edit/`}
+                      className="question-btn-no"
+                    >
+                      ✏️
+                    </NavLink>
+                  </div>
+                ))
+              ) : (
+                <p className="quizlist-heading">
+                  No quizsets found, create a quizsets
+                </p>
+              )}
+            </div>
+          )}
         </div>
       </>
     );
@@ -60,8 +70,7 @@ class Quizsets extends React.Component {
 }
 
 function mapStateToProps(store) {
-  console.log(store.admin);
-  return { quizsets: store.admin };
+  return { isLoading: store.admin.isLoading, quizsets: store.admin.quizsets };
 }
 
 export default connect(mapStateToProps)(Quizsets);

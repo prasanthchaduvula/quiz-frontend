@@ -56,7 +56,7 @@ class App extends React.Component {
             <Header handleIslogged={this.handleIslogged} />
             <Showmarks />
           </Route>
-          <Route exact path="/users/:username/quizsets/:quizname">
+          <Route exact path="/users/:username/quizsets/:quizname/:id">
             <Header handleIslogged={this.handleIslogged} />
             <Showquiz />
           </Route>

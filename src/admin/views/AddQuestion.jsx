@@ -1,7 +1,7 @@
 import React from 'react';
-import { withRouter } from 'react-router-dom';
+import { NavLink, withRouter } from 'react-router-dom';
 
-class Questionedit extends React.Component {
+class AddQuestion extends React.Component {
   constructor() {
     super();
     this.state = {
@@ -10,73 +10,48 @@ class Questionedit extends React.Component {
       option2: '',
       option3: '',
       option4: '',
-      options: [],
       answer: '',
       quizset: ''
     };
-  }
-  componentDidMount() {
-    let id = this.props.match.params.id;
-    fetch(`http://localhost:3001/api/v1/questions/${id}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: localStorage.quizAdminToken
-      }
-    })
-      .then(res => res.json())
-      .then(data => {
-        if (data.success) {
-          this.setState({
-            title: data.question.title,
-            option1: data.question.options[0],
-            option2: data.question.options[1],
-            option3: data.question.options[2],
-            option4: data.question.options[3],
-            answer: data.question.answer,
-            quizset: data.question.quizset
-          });
-        }
-      });
   }
 
   handleChange = event => {
     let { name, value } = event.target;
     this.setState({ [name]: value });
-    let { option1, option2, option3, option4 } = this.state;
-    let optionsarr = [option1, option2, option3, option4];
-    this.setState({ options: optionsarr });
   };
 
   handleSubmit = e => {
     e.preventDefault();
-    let id = this.props.match.params.id;
-    fetch(`http://localhost:3001/api/v1/questions/${id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: localStorage.quizAdminToken
-      },
-      body: JSON.stringify({
-        title: this.state.title,
-        options: this.state.options,
-        answer: this.state.answer,
-        quizset: this.state.quizset
-      })
-    })
+    fetch(
+      `http://localhost:3001/api/v1/quizsets/${this.props.match.params.id}`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: localStorage.quizAdminToken
+        },
+        body: JSON.stringify({
+          title: this.state.title,
+          option1: this.state.option1,
+          option2: this.state.option2,
+          option3: this.state.option3,
+          option4: this.state.option4,
+          answer: this.state.answer
+        })
+      }
+    )
       .then(res => res.json())
       .then(data => {
+        console.log(data);
         if (data.success) {
-          this.props.history.push(
-            `/admins/${localStorage.quizAdminName}/quizsets/${data.updatedQuestion.quizset}`
-          );
+          alert('successfully published');
         }
       });
   };
 
   render() {
     return (
-      <div className="sign-wrapper">
+      <div className="sign-wrapper rsign-wrapper">
         <div className="sign-section">
           <form className="sign-form">
             <label className="sign-label" htmlFor="">
@@ -133,25 +108,23 @@ class Questionedit extends React.Component {
             <label className="sign-label" htmlFor="">
               Correct answer
             </label>
-            <input
-              className="sign-input"
-              type="text"
+            <select
               name="answer"
-              placeholder="Ritesh Agarwal"
+              className="sign-select"
               value={this.state.answer}
               onChange={this.handleChange}
-            />
+            >
+              <option value={this.state.option1}>{this.state.option1}</option>
+              <option value={this.state.option2}>{this.state.option2}</option>
+              <option value={this.state.option3}>{this.state.option3}</option>
+              <option value={this.state.option4}>{this.state.option4}</option>
+            </select>
             <label className="sign-label" htmlFor="">
               Quizset Name
             </label>
-            <input
-              className="sign-input"
-              type="text"
-              name="quizset"
-              placeholder="business"
-              value={this.state.quizset}
-              onChange={this.handleChange}
-            />
+            <p className="sign-quizsetname">
+              {this.props.match.params.quizname}
+            </p>
             <input
               className="sign-btn nav-item-btn"
               type="submit"
@@ -165,4 +138,4 @@ class Questionedit extends React.Component {
   }
 }
 
-export default withRouter(Questionedit);
+export default withRouter(AddQuestion);

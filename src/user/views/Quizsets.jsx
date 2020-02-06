@@ -1,51 +1,45 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { fetchAllquizsets } from '../../state/actions/user.actions';
 class Quizsets extends React.Component {
   constructor() {
     super();
-    this.state = {
-      questions: '',
-      quizsetArr: [],
-      quizsetName: []
-    };
   }
   componentDidMount() {
-    fetch('http://localhost:3001/api/v1/questions/')
-      .then(res => res.json())
-      .then(data => {
-        console.log(data);
-        this.setState({ questions: data.questions });
-        this.state.questions.map(question =>
-          this.setState({
-            quizsetArr: this.state.quizsetArr.concat(question.quizset)
-          })
-        );
-        this.setState({ quizsetName: [...new Set(this.state.quizsetArr)] });
-      });
+    this.props.dispatch(fetchAllquizsets());
   }
 
-  handleQuizset = () => {};
   render() {
-    let { quizsetName } = this.state;
+    let { isLoading, quizsets } = this.props;
 
     return (
       <>
-        <div className="quizsets-list-wrapper">
-          <div className="quizsets-list">
-            {quizsetName &&
-              quizsetName.map(quizset => (
-                <NavLink
-                  className="quizset-text"
-                  to={`/users/${localStorage.quizuserName}/quizsets/${quizset}`}
-                >
-                  {quizset}
-                </NavLink>
-              ))}
-          </div>
+        <div className="quizsets-list-wrapper rquizsets-list-wrapper">
+          {isLoading ? (
+            <p className="loader rloader"></p>
+          ) : (
+            <div className="quizsets-list">
+              {quizsets &&
+                quizsets.map(quizset => (
+                  <NavLink
+                    className="quizset-text"
+                    to={`/users/${localStorage.quizuserName}/quizsets/${quizset.quizsetName}/${quizset._id}`}
+                  >
+                    {quizset.quizsetName}
+                  </NavLink>
+                ))}
+            </div>
+          )}
         </div>
       </>
     );
   }
 }
 
-export default Quizsets;
+function mapStateToProps(store) {
+  console.log(store.user.quizsets);
+  return { isLoading: store.user.isLoading, quizsets: store.user.quizsets };
+}
+
+export default connect(mapStateToProps)(Quizsets);

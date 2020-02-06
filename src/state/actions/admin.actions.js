@@ -1,4 +1,4 @@
-import { GET_QUESTIONS, GET_ADMIN } from '../types';
+import { GET_QUESTIONS, GET_ADMIN, GET_QUIZSET } from '../types';
 
 export function getAdmin(payload) {
   return { type: GET_ADMIN, payload };
@@ -20,19 +20,26 @@ export function fetchAdmin() {
   };
 }
 
-export function getQuestions(payload) {
+export function getQuizset(payload) {
   return {
-    type: GET_QUESTIONS,
+    type: GET_QUIZSET,
     payload
   };
 }
 
-export function fetchQuestions(quizsetname) {
+export function fetchQuizset(quizsetId) {
   return dispatch => {
-    fetch('http://localhost:3001/api/v1/questions')
+    fetch(`http://localhost:3001/api/v1/quizsets/${quizsetId}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: localStorage.quizAdminToken
+      }
+    })
       .then(res => res.json())
       .then(data => {
-        dispatch(getQuestions(data.questions));
+        console.log(data);
+        dispatch(getQuizset(data.quizset));
       });
   };
 }

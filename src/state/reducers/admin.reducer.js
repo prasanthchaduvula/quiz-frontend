@@ -1,10 +1,10 @@
-import { GET_QUESTIONS, GET_ADMIN } from '../types';
+import { GET_QUESTIONS, GET_ADMIN, GET_QUIZSET } from '../types';
 
 let intialState = {
-  admin: '',
-  questions: [],
-  filterqns: [],
-  quizsets: []
+  isLoading: true,
+  adminDetails: '',
+  quizsets: [],
+  quizset: ''
 };
 
 export default function admin(state = intialState, action) {
@@ -12,10 +12,15 @@ export default function admin(state = intialState, action) {
     case GET_ADMIN:
       return {
         ...state,
-        admin: action.payload,
-        quizsets: action.payload.questionsId.map(question => [
-          state.quizsets.concat(question.quizset)
-        ])
+        isLoading: false,
+        adminDetails: action.payload,
+        quizsets: action.payload.quizsetsId
+      };
+    case GET_QUIZSET:
+      return {
+        ...state,
+        isLoading: false,
+        quizset: action.payload
       };
     case GET_QUESTIONS:
       return {

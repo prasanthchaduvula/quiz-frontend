@@ -7,9 +7,11 @@ import Signup from './Signup';
 import Signin from './Signin';
 import Notfound from './Notfound';
 import Home from './Home';
-import Create from './Create';
 import Showquiz from './Showquiz';
-import Questionedit from './Questionedit';
+import EditQuestion from './EditQuestion';
+import CreateQuizset from './CreateQuizset';
+import EditQuizset from './EditQuizset';
+import AddQuestion from './AddQuestion';
 
 class App extends React.Component {
   constructor() {
@@ -55,18 +57,29 @@ class App extends React.Component {
           </Route>
           <Route exact path="/admins/:adminname/quizsets/create">
             <Header handleIslogged={this.handleIslogged} />
-            <Create />
+            <CreateQuizset />
           </Route>
-          <Route exact path="/admins/:adminname/quizsets/:quizname">
+          <Route exact path="/admins/:adminname/quizsets/:quizname/:id/edit">
+            <Header handleIslogged={this.handleIslogged} />
+            <EditQuizset />
+          </Route>
+          <Route exact path="/admins/:adminname/quizsets/:quizname/:id">
             <Header handleIslogged={this.handleIslogged} />
             <Showquiz />
+          </Route>
+          <Route
+            exact
+            path="/admins/:adminname/quizsets/:quizname/:id/addquestion"
+          >
+            <Header handleIslogged={this.handleIslogged} />
+            <AddQuestion />
           </Route>
           <Route
             exact
             path="/admins/:adminname/quizsets/:quizname/:title/:id/edit"
           >
             <Header handleIslogged={this.handleIslogged} />
-            <Questionedit />
+            <EditQuestion />
           </Route>
           <Route exact>
             <Notfound />

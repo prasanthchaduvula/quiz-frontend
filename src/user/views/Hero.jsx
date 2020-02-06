@@ -14,12 +14,12 @@ class Hero extends React.Component {
           </center>
         </div>
         <div className="footer-section">
-          <div className="footer-wrapper">
-            <div>
-              <NavLink className="footer-items" to="/">
+          <div className="footer-wrapper rfooter-wrapper">
+            <div className="rfooter-wrapper-items">
+              <NavLink className="footer-items rfooter-items" to="/">
                 ABOUT ME
               </NavLink>
-              <NavLink className="footer-items" to="/">
+              <NavLink className="footer-items rfooter-items" to="/">
                 HELP
               </NavLink>
             </div>
