@@ -1,5 +1,6 @@
 import React from 'react';
 import { NavLink, withRouter } from 'react-router-dom';
+import validator from 'validator';
 
 class Signin extends React.Component {
   constructor() {
@@ -12,31 +13,35 @@ class Signin extends React.Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    fetch('http://localhost:3001/api/v1/admins/signin', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        adminEmail: this.state.adminEmail,
-        adminPassword: this.state.adminPassword
+    if (validator.isEmail(this.state.adminEmail)) {
+      fetch('http://localhost:3001/api/v1/admins/signin', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          adminEmail: this.state.adminEmail,
+          adminPassword: this.state.adminPassword
+        })
       })
-    })
-      .then(res => res.json())
-      .then(data => {
-        console.log(data);
-        if (data.email) {
-          alert(data.message);
-        } else if (!data.success) {
-          alert(data.message);
-        } else if (data.success) {
-          alert('successfully loggedin');
-          localStorage.setItem('quizAdminToken', data.token);
-          localStorage.setItem('quizAdminName', data.adminName);
-          this.props.handleIslogged(true);
-          this.props.history.push(`/admins/${localStorage.quizAdminName}`);
-        }
-      });
+        .then(res => res.json())
+        .then(data => {
+          console.log(data);
+          if (data.email) {
+            alert(data.message);
+          } else if (!data.success) {
+            alert(data.message);
+          } else if (data.success) {
+            alert('successfully loggedin');
+            localStorage.setItem('quizAdminToken', data.token);
+            localStorage.setItem('quizAdminName', data.adminName);
+            this.props.handleIslogged(true);
+            this.props.history.push(`/admins/${localStorage.quizAdminName}`);
+          }
+        });
+    } else {
+      alert('enter valid details');
+    }
   };
 
   handleChange = event => {

@@ -1,5 +1,6 @@
 import React from 'react';
 import { NavLink, withRouter } from 'react-router-dom';
+import validator from 'validator';
 
 class Signup extends React.Component {
   constructor() {
@@ -14,28 +15,32 @@ class Signup extends React.Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    fetch('http://localhost:3001/api/v1/users/signup', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        userName: this.state.userName,
-        userEmail: this.state.userEmail,
-        userPassword: this.state.userPassword,
-        userPicture: this.state.userPicture
+    if (validator.isEmail(this.state.userEmail)) {
+      fetch('http://localhost:3001/api/v1/users/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          userName: this.state.userName,
+          userEmail: this.state.userEmail,
+          userPassword: this.state.userPassword,
+          userPicture: this.state.userPicture
+        })
       })
-    })
-      .then(res => res.json())
-      .then(data => {
-        if (data.success) {
-          console.log(data);
-          alert('successfully registered');
-          this.props.history.push('/users/signin');
-        } else {
-          alert('enter valid details');
-        }
-      });
+        .then(res => res.json())
+        .then(data => {
+          if (data.success) {
+            console.log(data);
+            alert('successfully registered');
+            this.props.history.push('/users/signin');
+          } else {
+            alert('enter valid details');
+          }
+        });
+    } else {
+      alert('enter valid details');
+    }
   };
 
   handleChange = event => {

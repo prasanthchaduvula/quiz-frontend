@@ -7,11 +7,7 @@ class Showquiz extends React.Component {
   constructor() {
     super();
     this.state = {
-      show: false,
-      quizname: '',
-      filterqns: [],
-      marks: 0,
-      ans: false
+      attemptedQus: []
     };
   }
 
@@ -19,34 +15,31 @@ class Showquiz extends React.Component {
     this.props.dispatch(fetchQuizset(this.props.match.params.id));
   }
 
-  handleAns = (event, _id, ans) => {
-    this.setState({ ans: true });
+  handleAns = (event, _id, selectedOption) => {
     event.target.parentElement.parentElement.innerText = event.target.innerText;
     event.target.parentElement.style.visibility = 'hidden';
-    this.setState({ show: true });
-    let { marks, filterqns } = this.state;
-    filterqns.map(question => {
-      if (question._id == _id) {
-        return question.answer == ans
-          ? this.setState({ marks: marks + 1 })
-          : '';
-      }
+    this.setState({
+      attemptedQus: this.state.attemptedQus.concat({
+        Id: _id,
+        selectedOption
+      })
     });
   };
 
-  handleSubmit = () => {
-    fetch('http://localhost:3001/api/v1/user/submit', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: localStorage.quizuserToken
-      },
-      body: JSON.stringify({
-        mark: this.state.marks,
-        totalmark: this.state.filterqns.length,
-        quizsetName: this.state.quizname
-      })
-    })
+  handleSubmit = event => {
+    fetch(
+      `http://localhost:3001/api/v1/user/quizsets/${this.props.questions._id}/submit`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: localStorage.quizuserToken
+        },
+        body: JSON.stringify({
+          attemptedQus: this.state.attemptedQus
+        })
+      }
+    )
       .then(res => res.json())
       .then(data => {
         if (data.success) {
@@ -67,12 +60,9 @@ class Showquiz extends React.Component {
               <p className="quizlist-heading">
                 {questions && questions.quizsetName}
               </p>
-              {/* <p
-                onClick={this.handleSubmit}
-                // className={`${show ? 'quizlist-submit-btn' : ''} `}
-              >
-                {/* {show ? 'SUBMIT' : ''} */}
-              {/* </p> */}
+              <p onClick={this.handleSubmit} className="quizlist-submit-btn">
+                SUBMIT
+              </p>
             </div>
 
             {questions &&

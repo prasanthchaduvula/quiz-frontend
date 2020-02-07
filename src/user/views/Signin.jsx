@@ -1,5 +1,6 @@
 import React from 'react';
 import { NavLink, withRouter } from 'react-router-dom';
+import validator from 'validator';
 
 class Signin extends React.Component {
   constructor() {
@@ -12,31 +13,35 @@ class Signin extends React.Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    fetch('http://localhost:3001/api/v1/users/signin', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        userEmail: this.state.userEmail,
-        userPassword: this.state.userPassword
+    if (validator.isEmail(this.state.userEmail)) {
+      fetch('http://localhost:3001/api/v1/users/signin', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          userEmail: this.state.userEmail,
+          userPassword: this.state.userPassword
+        })
       })
-    })
-      .then(res => res.json())
-      .then(data => {
-        console.log(data);
-        if (data.email) {
-          alert(data.message);
-        } else if (!data.success) {
-          alert(data.message);
-        } else if (data.success) {
-          alert('successfully loggedin');
-          localStorage.setItem('quizuserToken', data.token);
-          localStorage.setItem('quizuserName', data.userName);
-          this.props.handleIslogged(true);
-          this.props.history.push(`/users/${localStorage.quizuserName}`);
-        }
-      });
+        .then(res => res.json())
+        .then(data => {
+          console.log(data);
+          if (data.email) {
+            alert(data.message);
+          } else if (!data.success) {
+            alert(data.message);
+          } else if (data.success) {
+            alert('successfully loggedin');
+            localStorage.setItem('quizuserToken', data.token);
+            localStorage.setItem('quizuserName', data.userName);
+            this.props.handleIslogged(true);
+            this.props.history.push(`/users/${localStorage.quizuserName}`);
+          }
+        });
+    } else {
+      alert('enter valid details');
+    }
   };
 
   handleChange = event => {
